@@ -69,8 +69,8 @@ public class Flock  {
                 Vector3 delta = candidate.transform.position - sperm.transform.position;
                 if (delta.magnitude < .4f)
                 {
-                    sperm.Steer(delta*-1f,.05f);
-                    candidate.Steer(delta,.05f);
+                    sperm.Steer(delta*-1f,.1f);
+                    candidate.Steer(delta,.1f);
                 }
             }
         }

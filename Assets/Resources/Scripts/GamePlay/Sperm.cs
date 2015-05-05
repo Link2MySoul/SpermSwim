@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Sperm : MonoBehaviour {
+public class Sperm : SwimCreature {
 
 
     private Vector3 direction = Vector3.zero;
@@ -12,18 +12,23 @@ public class Sperm : MonoBehaviour {
     private Vector3 axisVector;
     private Vector3 originalFormPosition;
     private Vector3 targetPosition;
+	private Counter speedCircle;
+
 	void Start () {
-          
+		speedCircle = new Counter (.5f);
+		speedCircle.percent = UnityEngine.Random.Range (0f, 1f);
 	}
 
 	public void Simulate()
 	{
-
+		speedCircle.Tick (Time.deltaTime);
+		float resistance = Mathf.Sin(speedCircle.percent*Mathf.PI);
         direction = force;
-
-        this.transform.position += speed * Time.deltaTime * direction;
+		this.transform.position += (speed + resistance * .5f) * Time.deltaTime * direction;
         
     }
+
+
 
     public void SetFormPosition(Vector3 position)
     {
@@ -58,22 +63,22 @@ public class Sperm : MonoBehaviour {
     {
         targetPosition = original + formPosition;
         Vector3 delta = targetPosition - this.transform.localPosition;
-        speed = delta.magnitude*2f + originalSpeed;
+		speed = (delta.magnitude > .1f) ? delta.magnitude * 1f + originalSpeed : originalSpeed;
         Steer(delta, .2f);
     }
 
     public void Steer(Vector3 steerForce, float weight = 1f)
     {
-        force += steerForce.normalized * weight;
+        force += (steerForce.normalized * weight);
         force = force.normalized;
     }
     
    
-    public Vector3 GetReverseDirection()
+    public override Vector3 GetReverseDirection()
     {
         return -1f * direction;
     }
-    public Vector3 GetDirection()
+	public override Vector3 GetDirection()
     {
         return direction;
     }
