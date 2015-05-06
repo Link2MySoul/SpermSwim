@@ -13,9 +13,9 @@ public class Sperm : SwimCreature {
     private Vector3 originalFormPosition;
     private Vector3 targetPosition;
 	private Counter speedCircle;
-
+	public byte formIndex;
 	void Start () {
-		speedCircle = new Counter (.5f);
+		speedCircle = new Counter (.3f+UnityEngine.Random.Range (0f, .3f));
 		speedCircle.percent = UnityEngine.Random.Range (0f, 1f);
 	}
 

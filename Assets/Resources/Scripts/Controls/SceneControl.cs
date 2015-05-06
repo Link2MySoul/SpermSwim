@@ -5,7 +5,7 @@ public class SceneControl : Core.MonoSingleton<SceneControl> {
 
 	
 	private List<Flock> _flocks;
-	private int _flockCount = 10;
+	private int _flockCount = 64;
 	void Start () {
 		_flocks = new List<Flock> ();
 		_flocks.Add (new Flock ());
@@ -27,6 +27,7 @@ public class SceneControl : Core.MonoSingleton<SceneControl> {
 			_flocks[0].Follow(position);
 		}
 	}
+
 	public Vector3 GetFlockPosition()
 	{
 		Vector3 position = Vector3.zero;
@@ -36,6 +37,7 @@ public class SceneControl : Core.MonoSingleton<SceneControl> {
 		position /= _flocks.Count;
 		return position;
 	}
+
 	public void InitFlock()
 	{
 		for (int i = 0; i < _flockCount; i++)

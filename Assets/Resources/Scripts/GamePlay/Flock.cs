@@ -42,10 +42,13 @@ public class Flock  {
 
     public void LineUp()
     {
-        for (int i = 0; i < _sperms.Count; i++)
+        for (byte i = 0; i < _sperms.Count; i++)
         {
             Sperm sperm = _sperms[i];
-            sperm.SetAxisPosition(_form.GetMoveDirection() * -1f, _form.GetFormPositionByIndex(i));
+			sperm.formIndex = _form.GetEmptyFormIndex(i);
+			//Debug.Log(sperm.formIndex);
+			_form.Occupy(sperm.formIndex);
+			sperm.SetAxisPosition(_form.GetMoveDirection() * -1f, _form.GetFormPositionByIndex(sperm.formIndex));
             sperm.UpdateWorldOriginalPosition(GetLeader().transform.localPosition - GetLeader().GetFormPosition());
             sperm.Steer(_form.GetMoveDirection(), 1f);
         }
@@ -64,13 +67,13 @@ public class Flock  {
         for (int i = 0; i < _sperms.Count; i++)
         {
             Sperm candidate = _sperms[i];
-            if (candidate != sperm)
+			if (candidate != sperm && candidate!=GetLeader() && sperm!=GetLeader())
             {
                 Vector3 delta = candidate.transform.position - sperm.transform.position;
                 if (delta.magnitude < .4f)
                 {
-                    sperm.Steer(delta*-1f,.1f);
-                    candidate.Steer(delta,.1f);
+					sperm.Steer(delta*-1f,.1f);
+					candidate.Steer(delta,.1f);
                 }
             }
         }
@@ -100,7 +103,7 @@ public class Flock  {
 
         if (_sperms.Count>0)
         {
-            GetLeader().Steer(_targetPosition - GetLeader().transform.position, .4f);
+            GetLeader().Steer(_targetPosition - GetLeader().transform.position, .05f);
         }
 	}
 
